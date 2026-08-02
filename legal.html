@@ -13,15 +13,64 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="site-header">
+<svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
+  <symbol id="brandMark" viewBox="0 0 1024 1024">
+    <defs>
+      <linearGradient id="brandBg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#04141A" />
+        <stop offset="1" stop-color="#123C46" />
+      </linearGradient>
+      <linearGradient id="brandBeam" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#4DE8D4" stop-opacity="0.8" />
+        <stop offset="1" stop-color="#4DE8D4" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <rect width="1024" height="1024" rx="190" fill="url(#brandBg)" />
+    <g transform="translate(-204.8 -204.8) scale(1.4)">
+      <path d="M 512 660 C 430 622 350 606 268 622 L 268 350 C 350 332 430 344 512 382 Z" fill="#F2EDE1" />
+      <path d="M 512 660 C 430 622 350 606 268 622 L 268 350 C 350 332 430 344 512 382 Z" fill="#F2EDE1" transform="translate(1024,0) scale(-1,1)" />
+      <rect x="508" y="382" width="8" height="278" fill="#C98A4B" />
+      <path d="M 268 460 Q 390 430 512 460 Q 634 490 756 460" fill="none" stroke="#C98A4B" stroke-width="16" stroke-linecap="round" />
+      <path d="M 756 350 L 756 398 L 710 350 Z" fill="#0A2126" opacity="0.55" />
+      <path d="M 519 594 L 440 662 L 610 662 Z" fill="url(#brandBeam)" />
+      <g transform="translate(-165 135) rotate(14 725 295)">
+        <rect x="637.25" y="126.25" width="175.5" height="337.5" rx="40.5" fill="#0A2126" stroke="#C98A4B" stroke-width="10.8" />
+        <rect x="658.85" y="161.35" width="132.3" height="267.3" rx="18.9" fill="#123C46" />
+        <circle cx="725" cy="153.25" r="8.1" fill="#F2EDE1" />
+        <rect x="669.65" y="234.25" width="56.7" height="121.5" rx="8.1" fill="#F2EDE1" />
+        <rect x="731.75" y="234.25" width="56.7" height="121.5" rx="8.1" fill="#F2EDE1" />
+        <rect x="669.65" y="282.85" width="118.8" height="18.9" rx="9.45" fill="#4DE8D4" opacity="0.92" />
+      </g>
+    </g>
+  </symbol>
+</svg>
+
+<aside class="depth-rail" id="depthRail" aria-hidden="true">
+  <div class="depth-rail__track">
+    <div class="depth-rail__fill" id="depthFill"></div>
+    <span class="depth-rail__tick" style="top:0%"></span>
+    <span class="depth-rail__label" style="top:0%">0m</span>
+    <span class="depth-rail__tick" style="top:25%"></span>
+    <span class="depth-rail__label" style="top:25%">10m</span>
+    <span class="depth-rail__tick" style="top:50%"></span>
+    <span class="depth-rail__label" style="top:50%">20m</span>
+    <span class="depth-rail__tick" style="top:75%"></span>
+    <span class="depth-rail__label" style="top:75%">30m</span>
+    <span class="depth-rail__tick" style="top:100%"></span>
+    <span class="depth-rail__label" style="top:100%">40m</span>
+    <div class="depth-rail__readout" id="depthReadout">0m</div>
+  </div>
+</aside>
+
+<header class="site-header" id="siteHeader">
   <div class="container">
     <a class="brand" href="index.html">
-      <svg class="brand__mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="16" cy="16" r="16" fill="#14B8C4"/>
-        <path d="M6 18c2.5 2 5 2 7.5 0s5-2 7.5 0 5 2 7.5 0" stroke="#062A3F" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <svg class="brand__mark" viewBox="0 0 1024 1024" aria-hidden="true"><use href="#brandMark" /></svg>
       DiveScan
     </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
     <nav class="main-nav" id="mainNav">
       <a href="index.html#how-it-works">How it works</a>
       <a href="index.html#features">Features</a>
@@ -35,7 +84,7 @@
   <div class="content-page">
     <div class="container">
       <a class="back-link" href="index.html">← Back to DiveScan</a>
-      <h1>Legal Notice</h1>
+      <h1 data-reveal>Legal Notice</h1>
       <p class="updated">Angaben gemäß § 5 TMG / § 18 Abs. 2 MStV</p>
 
       <address>
@@ -102,5 +151,7 @@
     <p class="footer-fine">© 2026 Matthias Brecht.</p>
   </div>
 </footer>
+
+<script src="app.js"></script>
 </body>
 </html>
