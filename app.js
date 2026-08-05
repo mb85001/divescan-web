@@ -223,4 +223,98 @@
       });
     });
   }
+
+  /* ---------- Notify modal ---------- */
+
+  // The anon key is meant to be public — every write it can make is bounded
+  // by the table's RLS policy (insert-only, nothing back), same as any
+  // client-side Supabase key.
+  var SUPABASE_URL = "https://tuowxqdjifoubfbjlpqw.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_5bVtJd8wU7XHJxOEqaKZVw_ZU2lWRvS";
+
+  var notifyModal = document.getElementById("notifyModal");
+  var notifyForm = document.getElementById("notifyForm");
+  var notifyEmail = document.getElementById("notifyEmail");
+  var notifyStatus = document.getElementById("notifyStatus");
+
+  if (notifyModal && notifyForm && notifyEmail && notifyStatus) {
+    var notifySubmitButton = notifyForm.querySelector("button[type=submit]");
+
+    function resetNotifyForm() {
+      notifyForm.hidden = false;
+      notifyForm.reset();
+      notifyStatus.textContent = "";
+      notifyStatus.removeAttribute("data-state");
+      if (notifySubmitButton) {
+        notifySubmitButton.disabled = false;
+        notifySubmitButton.textContent = "Notify me";
+      }
+    }
+
+    document.querySelectorAll("[data-open-notify]").forEach(function (opener) {
+      opener.addEventListener("click", function () {
+        resetNotifyForm();
+        notifyModal.showModal();
+        notifyEmail.focus();
+      });
+    });
+
+    notifyModal.querySelectorAll("[data-close-notify]").forEach(function (closer) {
+      closer.addEventListener("click", function () {
+        notifyModal.close();
+      });
+    });
+
+    // A click that lands on the <dialog> element itself (not its content)
+    // is a backdrop click — the content covers the dialog box, so any hit on
+    // the dialog itself is outside it.
+    notifyModal.addEventListener("click", function (e) {
+      if (e.target === notifyModal) notifyModal.close();
+    });
+
+    notifyForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = notifyEmail.value.trim();
+      if (!email || !notifyEmail.checkValidity()) {
+        notifyStatus.textContent = "That doesn't look like a valid email address.";
+        notifyStatus.setAttribute("data-state", "error");
+        return;
+      }
+
+      if (notifySubmitButton) {
+        notifySubmitButton.disabled = true;
+        notifySubmitButton.textContent = "Sending…";
+      }
+      notifyStatus.textContent = "";
+      notifyStatus.removeAttribute("data-state");
+
+      fetch(SUPABASE_URL + "/rest/v1/launch_notify_signups", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: "Bearer " + SUPABASE_ANON_KEY,
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify({ email: email }),
+      })
+        .then(function (response) {
+          // 409 means the email's unique index rejected a repeat signup —
+          // from the diver's side that's still "you're on the list", not a
+          // failure. Anything else not-ok is a real error.
+          if (!response.ok && response.status !== 409) throw new Error("request failed");
+          notifyForm.hidden = true;
+          notifyStatus.textContent = "You're on the list — we'll email you at launch.";
+          notifyStatus.setAttribute("data-state", "success");
+        })
+        .catch(function () {
+          notifyStatus.textContent = "Something went wrong — please try again in a moment.";
+          notifyStatus.setAttribute("data-state", "error");
+          if (notifySubmitButton) {
+            notifySubmitButton.disabled = false;
+            notifySubmitButton.textContent = "Notify me";
+          }
+        });
+    });
+  }
 })();

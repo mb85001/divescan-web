@@ -109,7 +109,7 @@
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="privacy.html">Privacy</a>
-      <a class="button button--primary" href="mailto:info@divescan.eu?subject=Notify%20me%20when%20DiveScan%20launches">Get notified</a>
+      <button type="button" class="button button--primary" data-open-notify>Get notified</button>
     </nav>
   </div>
 </header>
@@ -130,7 +130,7 @@
         <h1>Your paper dive log, <em>digitized</em> in one photo.</h1>
         <p class="lede">Point your camera at a logged page. DiveScan's AI reads the handwriting, fills in every field, and builds a private digital logbook — no manual typing, ever again.</p>
         <div class="hero-actions">
-          <a class="button button--primary" data-magnetic href="mailto:info@divescan.eu?subject=Notify%20me%20when%20DiveScan%20launches">Get notified at launch</a>
+          <button type="button" class="button button--primary" data-magnetic data-open-notify>Get notified at launch</button>
           <a class="button button--on-dark" data-magnetic href="#how-it-works">See how it works</a>
         </div>
         <p class="hero-note">iPhone &amp; iPad · No account required to start · Built with Apple frameworks only</p>
@@ -306,7 +306,7 @@
     <div class="cta-banner container" data-reveal>
       <h2>DiveScan is finishing up in the workshop.</h2>
       <p>Leave your email and we'll let you know the moment it surfaces on the App Store.</p>
-      <a class="button button--primary" data-magnetic href="mailto:info@divescan.eu?subject=Notify%20me%20when%20DiveScan%20launches">Notify me at launch</a>
+      <button type="button" class="button button--primary" data-magnetic data-open-notify>Notify me at launch</button>
     </div>
   </section>
 </main>
@@ -327,6 +327,23 @@
     <p class="footer-fine">© 2026 Matthias Brecht. DiveScan is an independent app and is not affiliated with or endorsed by PADI.</p>
   </div>
 </footer>
+
+<dialog id="notifyModal" class="notify-modal" aria-labelledby="notifyModalTitle">
+  <button type="button" class="notify-modal__close" data-close-notify aria-label="Close">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <div class="notify-modal__body">
+    <h2 id="notifyModalTitle">Get notified</h2>
+    <p>Leave your email and we'll let you know the moment DiveScan surfaces on the App Store. No spam, one message.</p>
+    <form id="notifyForm" class="notify-form" novalidate>
+      <label class="visually-hidden" for="notifyEmail">Email address</label>
+      <input type="email" id="notifyEmail" name="email" placeholder="you@example.com" autocomplete="email" required />
+      <button type="submit" class="button button--primary">Notify me</button>
+    </form>
+    <p class="notify-form__status" id="notifyStatus" role="status" aria-live="polite"></p>
+    <p class="notify-form__fine">See our <a href="privacy.html">privacy policy</a> for how this is handled.</p>
+  </div>
+</dialog>
 
 <script src="app.js"></script>
 </body>
