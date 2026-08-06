@@ -3,6 +3,30 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- Always open on the hero ---------- */
+
+  // Browsers restore the previous scroll position on reload and on back,
+  // which drops a returning visitor into the middle of the page instead of
+  // the pitch. A hash in the URL still wins — this only opts out of the
+  // silent restore.
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
+  // Opting out of restoration is per-history-entry and takes effect from the
+  // next navigation, so a fragment has to be honoured here rather than left
+  // to the browser. Deferred a frame: the reveal styles change the height of
+  // everything above the target, so scrolling before layout settles aims at
+  // the wrong offset.
+  if (location.hash.length > 1) {
+    var deepLinkTarget = document.getElementById(location.hash.slice(1));
+    if (deepLinkTarget) {
+      requestAnimationFrame(function () {
+        deepLinkTarget.scrollIntoView();
+      });
+    }
+  }
+
   /* ---------- Nav toggle ---------- */
 
   var toggle = document.getElementById("navToggle");
@@ -48,6 +72,13 @@
     );
 
     revealTargets.forEach(function (el) {
+      // Anything already scrolled past can never intersect, so the observer
+      // would leave it at opacity 0 for good — a blank gap the moment the
+      // visitor scrolls back up. Happens on any deep link into the page.
+      if (el.getBoundingClientRect().bottom <= 0) {
+        el.classList.add("is-visible");
+        return;
+      }
       revealObserver.observe(el);
     });
   } else {

@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Editor/tooling config, including launch paths specific to one machine.
+.claude/
+
+# Supabase CLI scratch state. The backend lives in the DiveScan repo; this
+# directory is only ever created here by running the CLI from this folder.
+supabase/
